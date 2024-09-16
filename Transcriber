@@ -1,0 +1,33 @@
+import assemblyai as aai
+
+# Replace with your API key
+aai.settings.api_key = ""
+
+# Local file path of the MP3 file to transcribe
+FILE_PATH = r"your_file_path"
+
+# Output file path for the SRT file
+OUTPUT_FILE_PATH = r"your_output_file"
+
+config = aai.TranscriptionConfig(auto_highlights=True)
+
+transcriber = aai.Transcriber()
+transcript = transcriber.transcribe(FILE_PATH, config=config)
+
+def format_timestamp(ms):
+    """Helper function to format timestamp from milliseconds to SRT format"""
+    seconds, milliseconds = divmod(ms, 1000)
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes = divmod(minutes, 60)
+    return f"{hours:02}:{minutes:02}:{seconds:02},{milliseconds:03}"
+
+# Open the output file in write mode
+with open(OUTPUT_FILE_PATH, "w", encoding="utf-8") as f:
+    for i, word in enumerate(transcript.words):
+        start_time = format_timestamp(word.start)
+        end_time = format_timestamp(word.end)
+        f.write(f"{i + 1}\n")
+        f.write(f"{start_time} --> {end_time}\n")
+        f.write(f"{word.text}\n\n")
+
+print("Transcription saved to", OUTPUT_FILE_PATH)
