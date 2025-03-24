@@ -1,3 +1,5 @@
+# ZA ANGLEŠČINO
+
 import assemblyai as aai
 
 # Replace with your API key
@@ -31,3 +33,48 @@ with open(OUTPUT_FILE_PATH, "w", encoding="utf-8") as f:
         f.write(f"{word.text}\n\n")
 
 print("Transcription saved to", OUTPUT_FILE_PATH)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ZA SLOVEŠČINO
+
+import assemblyai as aai
+
+# Replace with your API key
+aai.settings.api_key = "743a5801fd4e44e7a3dca1bac92910c4"
+
+# Local file path of the MP3 file to transcribe
+FILE_PATH = r"D:\Youtube\aaa\0324.mp3"
+
+# Configure transcription with Slovenian language
+config = aai.TranscriptionConfig(
+    language_code="sl",  # Set Slovenian as the language
+    speech_model=aai.SpeechModel.nano  # Use the default nano model
+)
+
+transcriber = aai.Transcriber(config=config)
+transcript = transcriber.transcribe(FILE_PATH)
+
+# Handle potential errors
+if transcript.status == aai.TranscriptStatus.error:
+    print("Transcription error:", transcript.error)
+else:
+    print("Transcription:", transcript.text)
+
+    # Save transcription to a file
+    with open(r"D:\Youtube\aaa\toilet.txt", "w", encoding="utf-8") as f:
+        f.write(transcript.text)
+
+    print("Transcription saved successfully!")
